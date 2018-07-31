@@ -11,7 +11,7 @@ public class Usuario {
 	
 	//PROPIEDADES
 	private ObjectProperty<Integer> sysPk;
-	private StringProperty nombre;
+	private StringProperty usuario;
 	private StringProperty contrasena;
 	private StringProperty correoElectronico;
 	private ObjectProperty<Date> fechaRegistro;
@@ -29,9 +29,9 @@ public class Usuario {
 	}//FIN CONSTRUCTOR
 	
 	//CONSTRUCTOR CON PARAMETROS
-	public Usuario(Integer sysPk, String nombre, String contrasena, String correoElectronico, Date fechaRegistro, Date fechaBloqueo, Integer status) {
+	public Usuario(Integer sysPk, String usuario, String contrasena, String correoElectronico, Date fechaRegistro, Date fechaBloqueo, Integer status) {
 		this.sysPk = new SimpleObjectProperty<Integer>(sysPk);
-		this.nombre = new SimpleStringProperty(nombre);
+		this.usuario = new SimpleStringProperty(usuario);
 		this.contrasena = new SimpleStringProperty(contrasena);
 		this.correoElectronico = new SimpleStringProperty(correoElectronico);
 		this.fechaRegistro = new SimpleObjectProperty<Date>(fechaRegistro);
@@ -54,16 +54,16 @@ public class Usuario {
 	//FINT METODOS "SYSPK"
 	
 	//METODOS PARA ACCESO A "NOMBRE"
-	public void setNombre(String nombre) {
-		this.nombre.set(nombre);
+	public void setUsuario(String usuario) {
+		this.usuario.set(usuario);
 	}//FIN METODO
 	
-	public String getNombre() {
-		return this.nombre.get();
+	public String getUsuario() {
+		return this.usuario.get();
 	}//FIN METODO
 	
-	public StringProperty nombreProperty() {
-		return this.nombre;
+	public StringProperty usuarioProperty() {
+		return this.usuario;
 	}//FIN METODO
 	//FIN METODOS "NOMBRE"
 	
@@ -139,7 +139,7 @@ public class Usuario {
 	
 	public String showInformacionUsuario() {
 		String informacionUsuario = "SysPk: " + this.getSysPk() + "\n"
-				+ "Nombre: " + this.getNombre() + "\n"
+				+ "Nombre: " + this.getUsuario() + "\n"
 						+ "Contraseña: " + this.getContrasena() + "\n"
 								+ "Correo Electrónico: " + this.getCorreoElectronico() + "\n"
 										+ "Fecha Registro: " + this.getFechaRegistro().toString() + "\n"
