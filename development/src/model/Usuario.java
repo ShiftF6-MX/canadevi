@@ -110,7 +110,7 @@ public class Usuario {
 	//END METODOS "FECHA REGISTRO"
 	
 	//METODOS PARA ACCESO A "FECHA BLOQUEO"
-	public void serFechaBloqueo(Date fechaBloqueo) {
+	public void setFechaBloqueo(Date fechaBloqueo) {
 		this.fechaBloqueo.set(fechaBloqueo);
 	}//FIN METODO
 	
