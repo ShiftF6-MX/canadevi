@@ -17,6 +17,7 @@ public class Usuario {
 	private ObjectProperty<Date> fechaRegistro;
 	private ObjectProperty<Date> fechaBloqueo;
 	private ObjectProperty<Integer> status;
+	private ObjectProperty<GrupoUsuario> grupoUsuario;
 	
 	//CONSTANTES
 	static final int BLOQUEADO = 0;
@@ -25,11 +26,11 @@ public class Usuario {
 	
 	//CONSTRUCTOR SIN PARAMETROS	
 	public Usuario() {
-		this(0,"","","",null,null,0);
+		this(0,"","","",null,null,0,null);
 	}//FIN CONSTRUCTOR
 	
 	//CONSTRUCTOR CON PARAMETROS
-	public Usuario(Integer sysPk, String usuario, String contrasena, String correoElectronico, Date fechaRegistro, Date fechaBloqueo, Integer status) {
+	public Usuario(Integer sysPk, String usuario, String contrasena, String correoElectronico, Date fechaRegistro, Date fechaBloqueo, Integer status, GrupoUsuario grupoUsuario) {
 		this.sysPk = new SimpleObjectProperty<Integer>(sysPk);
 		this.usuario = new SimpleStringProperty(usuario);
 		this.contrasena = new SimpleStringProperty(contrasena);
@@ -37,6 +38,7 @@ public class Usuario {
 		this.fechaRegistro = new SimpleObjectProperty<Date>(fechaRegistro);
 		this.fechaBloqueo = new SimpleObjectProperty<Date>(fechaBloqueo);
 		this.status = new SimpleObjectProperty<Integer>(status);
+		this.grupoUsuario = new SimpleObjectProperty<GrupoUsuario>(grupoUsuario);
 	}//FIN CONSTRUCTOR
 	
 	//METODOS PARA ACCESO A "SYSPK"
@@ -137,6 +139,20 @@ public class Usuario {
 	}//FIN METODO
 	//FIN METODO "STATUS"
 	
+	//METODOS PARA ACCESO A "GRUPO USUARIO"
+	public void setGrupoUsuario(GrupoUsuario grupoUsuario) {
+		this.grupoUsuario.set(grupoUsuario);
+	}//FIN METODO
+	
+	public GrupoUsuario getGrupoUsuario() {
+		return this.grupoUsuario.get();
+	}//FIN METODO
+	
+	public ObjectProperty<GrupoUsuario> grupoUsuarioProperty() {
+		return this.grupoUsuario;
+	}//FIN METODO
+	//FIN METODOS "GRUPO USUARIO"
+	
 	public String showInformacionUsuario() {
 		String informacionUsuario = "SysPk: " + this.getSysPk() + "\n"
 				+ "Nombre: " + this.getUsuario() + "\n"
@@ -144,7 +160,8 @@ public class Usuario {
 								+ "Correo Electrónico: " + this.getCorreoElectronico() + "\n"
 										+ "Fecha Registro: " + this.getFechaRegistro().toString() + "\n"
 												+ "Fecha Bloqueo: " + this.getFechaBloqueo().toString() + "\n"
-														+ "Status: " + this.getStatus();
+														+ "Status: " + this.getStatus() + "\n"
+																+ "Nombre Grupo Usuario: " + this.getGrupoUsuario().getNombre();
 		return informacionUsuario;
 	}//FIN METODO
 
