@@ -14,19 +14,21 @@ public class Sesion {
 	private ObjectProperty<Time> horaApertura;
 	private ObjectProperty<Date> fechaCierre;
 	private ObjectProperty<Time> horaCierre;
+	private ObjectProperty<Usuario> usuario;
 	
 	//CONSTRUCTOR SIN PARAMETROS
 	public Sesion() {
-		this(0,null,null,null,null);
+		this(0,null,null,null,null,null);
 	}//FIN CONSTRUCTOR
 	
 	//CONSTRUCTOR CON PARAMETROS
-	public Sesion(Integer sysPk, Date fechaApertura, Time horaApertura, Date fechaCierre, Time horaCierre) {
+	public Sesion(Integer sysPk, Date fechaApertura, Time horaApertura, Date fechaCierre, Time horaCierre, Usuario usuario) {
 		this.sysPk = new SimpleObjectProperty<Integer>(sysPk);
 		this.fechaApertura = new SimpleObjectProperty<Date>(fechaApertura);
 		this.horaApertura = new SimpleObjectProperty<Time>(horaApertura);
 		this.fechaCierre = new SimpleObjectProperty<Date>(fechaCierre);
 		this.horaCierre = new SimpleObjectProperty<Time>(horaCierre);
+		this.usuario = new SimpleObjectProperty<Usuario>(usuario);
 	}//FIN CONSTRUCTOR
 	
 	//METODOS PARA ACCESO A "SYSPK"
@@ -99,10 +101,25 @@ public class Sesion {
 	}//FIN METODO
 	//FIN METODOS "HORA CIERRE"
 	
+	//METODOS PARA ACCESO A "USUARIO"
+	public void setUsuario(Usuario usuario) {
+		this.usuario.set(usuario);
+	}//FIN METODO
+	
+	public Usuario getUsuario() {
+		return this.usuario.get();
+	}//FIN METODO
+	
+	public ObjectProperty<Usuario> usuarioProperty() {
+		return this.usuario;
+	}//FIN METODO
+	//FIN METODOS "USUARIO"
+	
 	public String showInformacionSesion() {
 		String informacionSesion = "SysPk: " + this.getSysPk() + "\n"
 				+ "Inicio Sesión: " + this.getFechaApertura().toString() + " @ " + this.getHoraApertura().toString() + "\n"
-						+ "Cierre Sesión: " + this.getFechaCierre().toString() + " @ " + this.getHoraCierre().toString();
+						+ "Cierre Sesión: " + this.getFechaCierre().toString() + " @ " + this.getHoraCierre().toString() + "\n"
+								+ "Nombre Usuario: " + this.getUsuario().getUsuario();
 		return informacionSesion;
 	}//FIN METODO
 	
