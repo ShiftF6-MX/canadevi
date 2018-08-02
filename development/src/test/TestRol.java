@@ -15,7 +15,7 @@ public class TestRol{
     	rolDAO.crear(connectionDB.conectarMySQL(), rol);
     }
     public static void testLeer() throws Exception {    	 
-    	rolDAO.leer(connectionDB.conectarMySQL(), "sysPk", Integer.toString(1));
+    	rolDAO.leer(connectionDB.conectarMySQL(), "sysPk", Integer.toString(6));
     	    	
     }
     public static void testModificar() throws Exception {  
@@ -31,8 +31,8 @@ public class TestRol{
     }
     public static void main(String[] args) throws Exception{
     	//testCrear();
-    	//testLeer();
-    	testModificar();
+    	testLeer();
+    	//testModificar();
     	//testEliminar();
     }
 	

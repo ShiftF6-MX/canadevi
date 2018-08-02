@@ -90,7 +90,8 @@ public class UsuarioDAO implements ObjectDAO {
 			preparedStmt.setDate(5, nuevousuario.getFechaBloqueo());
 			preparedStmt.setInt(6, nuevousuario.getStatus());
 			preparedStmt.setInt(7, nuevousuario.getGrupoUsuario().getSysPk());
-			preparedStmt.setInt(8, nuevousuario.getSysPk());			
+			preparedStmt.setInt(8, nuevousuario.getSysPk());
+			preparedStmt.setInt(8, nuevousuario.getGrupoUsuario().getSysPk());
 			preparedStmt.execute();
 			return true;
 		} catch (SQLException e) {

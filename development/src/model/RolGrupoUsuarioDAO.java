@@ -12,12 +12,13 @@ public class RolGrupoUsuarioDAO implements ObjectDAO{
 	@Override
 	public boolean crear(Connection connection, Object rolgrupousuario){
 		RolGrupoUsuario rolGrupoUsuario=(RolGrupoUsuario)rolgrupousuario;
-		String query=" INSERT INTO rolgrupousuario (grupoUsuario, rol) values ( ?, ?)";
+		
+		String query=" INSERT INTO rolgruposusuario (grupoUsuario, rol) values ( ?, ?)";
 		try {			
-			PreparedStatement preparedStmt = (PreparedStatement) connection.prepareStatement(query);
-			preparedStmt.setInt(1, rolGrupoUsuario.getGrupoUsuario().getSysPk());
-			preparedStmt.setInt(2, rolGrupoUsuario.getRol().getSysPk());
-			preparedStmt.execute();
+			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
+			preparedStatement.setInt(1, rolGrupoUsuario.getGrupoUsuario().getSysPk());
+			preparedStatement.setInt(2, rolGrupoUsuario.getRol().getSysPk());
+			preparedStatement.execute();
 			return true;
 			} catch (SQLException e) {
 				System.out.println("Error: En método crear");
@@ -30,17 +31,20 @@ public class RolGrupoUsuarioDAO implements ObjectDAO{
 	@Override
 	public ArrayList<Object> leer(Connection connection, String campoBusqueda, String valorBusqueda) {
 			ArrayList<Object> listaRolGrupoUsuario = new ArrayList<Object>();
+			GrupoUsuario grupoUsuario= new GrupoUsuario();	
+			RolGrupoUsuario rolGrupoUsuario = new RolGrupoUsuario();
+			Rol rol = new Rol();
 			if(campoBusqueda.isEmpty() || valorBusqueda.isEmpty()) {
-				query="SELECT * FROM gruposusuario ORDER BY sysPK";
+				query="SELECT * FROM rolgruposusuario ORDER BY sysPK";
 				try {
 					ResultSet resultSet = connection.createStatement().executeQuery(query);							
 					System.out.println(query);
 					while (resultSet.next()) {
-						Rol rol = new Rol();
-						rol.setSysPk(Integer.parseInt(resultSet.getString(1)));
-						rol.setCodigoItem(resultSet.getString(2));
-						rol.setDescripcion(resultSet.getString(3));
-						listaRol.add(rol);
+						
+						rolGrupoUsuario.setSysPk(Integer.parseInt(resultSet.getString(1)));
+						rolGrupoUsuario.setGrupoUsuario(grupoUsuario);
+						rolGrupoUsuario.setRol(rol);
+						listaRolGrupoUsuario.add(rolGrupoUsuario);
 						System.out.println(resultSet.next());
 					}
 				}catch (SQLException e) {
@@ -55,14 +59,13 @@ public class RolGrupoUsuarioDAO implements ObjectDAO{
 					PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
 					preparedStatement.setString(1, campoBusqueda);
 					preparedStatement.setString(2, valorBusqueda);
-					ResultSet rs=preparedStatement.executeQuery();
-					while (rs.next()) {
-						Rol nuevorol = new Rol();
-						nuevorol.setSysPk(Integer.parseInt(rs.getString(1)));
-						nuevorol.setCodigoItem(rs.getString(2));
-						nuevorol.setDescripcion(rs.getString(3));
-						listaRol.add(nuevorol);
-						System.out.println(rs.next());
+					ResultSet resultSet=preparedStatement.executeQuery();
+					while (resultSet.next()) {						
+						rolGrupoUsuario.setSysPk(Integer.parseInt(resultSet.getString(1)));
+						rolGrupoUsuario.setGrupoUsuario(grupoUsuario);
+						rolGrupoUsuario.setRol(rol);
+						listaRolGrupoUsuario.add(rolGrupoUsuario);
+						System.out.println(resultSet.next());
 					}
 				}catch (SQLException e) {
 						System.out.println("Error: En método leer");
@@ -70,7 +73,7 @@ public class RolGrupoUsuarioDAO implements ObjectDAO{
 					}
 				
 			}
-			return listaRol;
+			return listaRolGrupoUsuario;
 		
 		
 		}
@@ -81,11 +84,11 @@ public class RolGrupoUsuarioDAO implements ObjectDAO{
 		String query="UPDATE grupousuario SET grupoUsuario= ?, rol= ? WHERE sysPK= ?;";
 		try {
 			RolGrupoUsuario rolGrupoUsuario=(RolGrupoUsuario)rolgrupoUsuario;
-			PreparedStatement preparedStmt = (PreparedStatement) connection.prepareStatement(query);			
-			preparedStmt.setInt(1, rolGrupoUsuario.getGrupoUsuario().getSysPk());
-			preparedStmt.setInt(2, rolGrupoUsuario.getRol().getSysPk());
-			preparedStmt.setInt(3, rolGrupoUsuario.getSysPk());
-			preparedStmt.execute();
+			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);			
+			preparedStatement.setInt(1, rolGrupoUsuario.getGrupoUsuario().getSysPk());
+			preparedStatement.setInt(2, rolGrupoUsuario.getRol().getSysPk());
+			preparedStatement.setInt(3, rolGrupoUsuario.getSysPk());
+			preparedStatement.execute();
 			return true;
 			} catch (SQLException e) {
 				System.out.println("Error: En método modificar");
@@ -101,7 +104,7 @@ public class RolGrupoUsuarioDAO implements ObjectDAO{
 			try {			
 				RolGrupoUsuario rolGrupoUsuario=(RolGrupoUsuario)rolgrupousuario;
 				PreparedStatement preparedStmt = (PreparedStatement) connection.prepareStatement(query);
-				preparedStmt.setInt(1, nuevorolgrupousuario.getSysPk());
+				preparedStmt.setInt(1, rolGrupoUsuario.getSysPk());
 				preparedStmt.execute();
 				return true;
 				} catch (SQLException e) {
