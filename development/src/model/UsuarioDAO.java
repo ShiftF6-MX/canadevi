@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.sql.Connection;
@@ -13,7 +14,7 @@ public class UsuarioDAO implements ObjectDAO {
 	public String query ="";
 	//Metodo crear para crear un usuario nuevo
 	@Override
-	public boolean crear(Connection connection, Object usuario) throws Exception {		
+	public boolean crear(Connection connection, Object usuario){		
 		Usuario nuevousuario=(Usuario)usuario;
 		String query=" INSERT INTO usuarios (usuario, contrasena, correoElectronico, fechaRegistro, fechaBloqueo, status)"
 		        + " values ( ?, ?, ?, ?, ?, ?, ?)";
@@ -36,7 +37,7 @@ public class UsuarioDAO implements ObjectDAO {
 	}
 	//Metodo para hacer un select a la tabla usuarios
 	@Override
-	public ArrayList<Object> leer(Connection connection, String campoBusqueda, String valorBusqueda) throws Exception {
+	public ArrayList<Object> leer(Connection connection, String campoBusqueda, String valorBusqueda) {
 		
 		if(campoBusqueda.isEmpty() || valorBusqueda.isEmpty()) {
 			query="SELECT * FROM usuarios WHERE ORDER BY sysPK";
@@ -66,7 +67,7 @@ public class UsuarioDAO implements ObjectDAO {
 				nuevousuario.setStatus(Integer.parseInt(rs.getString(6)));
 				listaUsuario.add(nuevousuario);
 			}
-		}catch (SQLException e) {
+		}catch (SQLException | ParseException e) {
 				System.out.println("Error: En método leer");
 				e.printStackTrace();
 			}
@@ -75,7 +76,7 @@ public class UsuarioDAO implements ObjectDAO {
 	}
 	//Metodo para hacer un update en la tabla usuarios
 	@Override
-	public boolean modificar(Connection connection, Object usuario) throws Exception {
+	public boolean modificar(Connection connection, Object usuario){
 		String query="UPDATE usuarios\r\n" + 
 				"    SET usuario= ?, contrasena= ?, correoElectronico= ?, fechaRegistro= ?, fechaBloqueo= ?, status= ?, grupoUsuario= ? \r\n" + 
 				"    WHERE sysPK= ?;";
@@ -100,7 +101,7 @@ public class UsuarioDAO implements ObjectDAO {
 	}
 	//Metodo para hacer un delete en la tabla usuarios
 	@Override
-	public boolean eliminar(Connection connection, Object usuario) throws Exception {
+	public boolean eliminar(Connection connection, Object usuario) {
 		String query=" DELETE FROM usuarios WHERE sysPK= ?";
 		try {			
 			Usuario nuevousuario=(Usuario)usuario;

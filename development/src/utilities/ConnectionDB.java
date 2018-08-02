@@ -28,8 +28,8 @@ public class ConnectionDB {
             //System.out.println("Conexion exitosa");
             return conexion;
         }catch(ClassNotFoundException | SQLException e){
-            Notificacion.dialogoException(e);
-        	//System.out.println("Conexion rechazada");
+            //Notificacion.dialogoException(e);
+        	System.out.println("Conexion rechazada");
             return null;
         }//END TRY-CATCH
     }//END CONECTARMYSQL
@@ -37,9 +37,9 @@ public class ConnectionDB {
     public void terminarConexion(Connection connection){
         try{
         	connection.close();
-            //System.out.println("Conexion finalizada");
+            System.out.println("Conexion finalizada");
         }catch(SQLException sqle){
-            Notificacion.dialogoException(sqle);
+            //Notificacion.dialogoException(sqle);
         }//END TRY-CATCH
     }//END TERMINAR CONEXION
     

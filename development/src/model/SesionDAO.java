@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.sql.Connection;
@@ -14,7 +15,7 @@ public class SesionDAO implements ObjectDAO {
 	public String query ="";
 	//Metodo crear para crear sesion
 		@Override
-		public boolean crear(Connection connection, Object sesion) throws Exception {		
+		public boolean crear(Connection connection, Object sesion) {		
 			Sesion nuevasesion=(Sesion)sesion;
 			String query=" INSERT INTO sesiones (fechaA, horaA, fechaC, horaC, usuario)"
 			        + " values ( ?, ?, ?, ?, ?)";
@@ -36,10 +37,10 @@ public class SesionDAO implements ObjectDAO {
 
 		//Metodo para hacer un select a la tabla sesiones
 		@Override
-		public ArrayList<Object> leer(Connection connection, String campoBusqueda, String valorBusqueda) throws Exception {
+		public ArrayList<Object> leer(Connection connection, String campoBusqueda, String valorBusqueda) {
 
 			if(campoBusqueda.isEmpty() || valorBusqueda.isEmpty()) {
-				query="SELECT * FROM sesiones WHERE ORDER BY sysPK";
+				query="SELECT * FROM sesiones ORDER BY sysPK";
 			}else {
 				query="SELECT * FROM sesiones WHERE ? = ?  ORDER BY sysPK";
 			}
@@ -68,7 +69,7 @@ public class SesionDAO implements ObjectDAO {
 					nuevousuario.setSysPk(rs.getInt(6));
 					listaSesion.add(nuevasesion);
 				}
-			}catch (SQLException e) {
+			}catch (SQLException | ParseException e) {
 					System.out.println("Error: En método leer");
 					e.printStackTrace();
 				}
@@ -78,7 +79,7 @@ public class SesionDAO implements ObjectDAO {
 
 		//Metodo para hacer un update en la tabla usuarios
 		@Override
-		public boolean modificar(Connection connection, Object usuario) throws Exception {
+		public boolean modificar(Connection connection, Object usuario) {
 			String query="UPDATE usuarios\r\n" + 
 					"    SET sysPK= ?, fechaA= ?, horaA= ?, fechaC= ?, horaC= ?, usuario= ?\r\n" + 
 					"    WHERE sysPK= ?;";
@@ -103,7 +104,7 @@ public class SesionDAO implements ObjectDAO {
 
 		//Metodo para hacer un delete en la tabla sesiones
 		@Override
-		public boolean eliminar(Connection connection, Object sesiones) throws Exception {
+		public boolean eliminar(Connection connection, Object sesiones) {
 			String query=" DELETE FROM sesiones WHERE sysPK= ?";
 			try {			
 				Sesion nuevasesion=new Sesion();

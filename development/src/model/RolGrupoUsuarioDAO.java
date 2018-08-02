@@ -10,7 +10,7 @@ public class RolGrupoUsuarioDAO implements ObjectDAO{
 	public String query ="";
 	//Metodo crear para crear la relacion  Rol y Grupo usuarion en la base de datos 
 	@Override
-	public boolean crear(Connection connection, Object rolgrupousuario) throws Exception {
+	public boolean crear(Connection connection, Object rolgrupousuario){
 		RolGrupoUsuario nuevorolgrupousuario=(RolGrupoUsuario)rolgrupousuario;
 		String query=" INSERT INTO rolgrupousuario (grupoUsuario, rol) values ( ?, ?)";
 		try {			
@@ -28,7 +28,7 @@ public class RolGrupoUsuarioDAO implements ObjectDAO{
 
 	//Metodo para hacer un select a la tabla rolgrupousuario
 	@Override
-	public ArrayList<Object> leer(Connection connection, String campoBusqueda, String valorBusqueda) throws Exception {
+	public ArrayList<Object> leer(Connection connection, String campoBusqueda, String valorBusqueda) {
 		
 		if(campoBusqueda.isEmpty() || valorBusqueda.isEmpty()) {
 			query="SELECT * FROM rolgruposusuario WHERE ORDER BY sysPK";
@@ -59,7 +59,7 @@ public class RolGrupoUsuarioDAO implements ObjectDAO{
 
 	//Metodo para hacer un update en la tabla rolgrupousuario
 	@Override
-	public boolean modificar(Connection connection, Object rolgrupoUsuario) throws Exception {
+	public boolean modificar(Connection connection, Object rolgrupoUsuario){
 		String query="UPDATE grupousuario SET grupoUsuario= ?, rol= ? WHERE sysPK= ?;";
 		try {
 			RolGrupoUsuario nuevorolgrupousuario=(RolGrupoUsuario)rolgrupoUsuario;
@@ -78,7 +78,7 @@ public class RolGrupoUsuarioDAO implements ObjectDAO{
 
 	//Metodo para hacer un delete en la tabla rol
 		@Override
-		public boolean eliminar(Connection connection, Object rolgrupousuario) throws Exception {
+		public boolean eliminar(Connection connection, Object rolgrupousuario) {
 			String query=" DELETE FROM rol WHERE sysPK= ?";
 			try {			
 				RolGrupoUsuario nuevorolgrupousuario=(RolGrupoUsuario)rolgrupousuario;
