@@ -11,14 +11,14 @@ public class RolDAO implements ObjectDAO{
 	//Metodo crear para crear un rol
 		@Override
 		public boolean crear(Connection connection, Object rol) {		
-			Rol nuevorol=(Rol)rol;
+			Rol claseRol=(Rol)rol;
 			String query=" INSERT INTO roles (codigoItem, descripcion)"
 			        + " values ( ?, ?)";
 			try {			
-				PreparedStatement preparedStmt = (PreparedStatement) connection.prepareStatement(query);
-				preparedStmt.setString(1, nuevorol.getCodigoItem());
-				preparedStmt.setString(2, nuevorol.getDescripcion());
-				preparedStmt.execute();
+				PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
+				preparedStatement.setString(1, claseRol.getCodigoItem());
+				preparedStatement.setString(2, claseRol.getDescripcion());
+				preparedStatement.execute();
 				return true;
 			} catch (SQLException e) {
 				System.out.println("Error: En método crear");
@@ -37,11 +37,11 @@ public class RolDAO implements ObjectDAO{
 					ResultSet rs = connection.createStatement().executeQuery(query);							
 					System.out.println(query);
 					while (rs.next()) {
-						Rol nuevorol = new Rol();
-						nuevorol.setSysPk(Integer.parseInt(rs.getString(1)));
-						nuevorol.setCodigoItem(rs.getString(2));
-						nuevorol.setDescripcion(rs.getString(3));
-						listaRol.add(nuevorol);
+						Rol claseRol = new Rol();
+						claseRol.setSysPk(Integer.parseInt(rs.getString(1)));
+						claseRol.setCodigoItem(rs.getString(2));
+						claseRol.setDescripcion(rs.getString(3));
+						listaRol.add(claseRol);
 						System.out.println(rs.next());
 					}
 				}catch (SQLException e) {
@@ -53,16 +53,16 @@ public class RolDAO implements ObjectDAO{
 							
 				try {
 					System.out.println(query);
-					PreparedStatement preparedStmt = (PreparedStatement) connection.prepareStatement(query);
-					preparedStmt.setString(1, campoBusqueda);
-					preparedStmt.setString(2, valorBusqueda);
-					ResultSet rs=preparedStmt.executeQuery();
+					PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
+					preparedStatement.setString(1, campoBusqueda);
+					preparedStatement.setString(2, valorBusqueda);
+					ResultSet rs=preparedStatement.executeQuery();
 					while (rs.next()) {
-						Rol nuevorol = new Rol();
-						nuevorol.setSysPk(Integer.parseInt(rs.getString(1)));
-						nuevorol.setCodigoItem(rs.getString(2));
-						nuevorol.setDescripcion(rs.getString(3));
-						listaRol.add(nuevorol);
+						Rol claseRol = new Rol();
+						claseRol.setSysPk(Integer.parseInt(rs.getString(1)));
+						claseRol.setCodigoItem(rs.getString(2));
+						claseRol.setDescripcion(rs.getString(3));
+						listaRol.add(claseRol);
 						System.out.println(rs.next());
 					}
 				}catch (SQLException e) {
@@ -82,12 +82,12 @@ public class RolDAO implements ObjectDAO{
 		public boolean modificar(Connection connection, Object rol) {
 			String query="UPDATE roles SET codigoItem= ?, descripcion= ? WHERE sysPK= ?;";
 			try {
-				Rol nuevorol=(Rol)rol;
-				PreparedStatement preparedStmt = (PreparedStatement) connection.prepareStatement(query);
-				preparedStmt.setString(1, nuevorol.getCodigoItem());
-				preparedStmt.setString(2, nuevorol.getDescripcion());	
-				preparedStmt.setInt(3, nuevorol.getSysPk());
-				preparedStmt.execute();
+				Rol claseRol=(Rol)rol;
+				PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
+				preparedStatement.setString(1, claseRol.getCodigoItem());
+				preparedStatement.setString(2, claseRol.getDescripcion());	
+				preparedStatement.setInt(3, claseRol.getSysPk());
+				preparedStatement.execute();
 				return true;
 			} catch (SQLException e) {
 				System.out.println("Error: En método modificar");
@@ -101,10 +101,10 @@ public class RolDAO implements ObjectDAO{
 		public boolean eliminar(Connection connection, Object rol) {
 			String query=" DELETE FROM roles WHERE sysPK= ?";
 			try {			
-				Rol nuevorol=(Rol)rol;
-				PreparedStatement preparedStmt = (PreparedStatement) connection.prepareStatement(query);
-				preparedStmt.setInt(1, nuevorol.getSysPk());
-				preparedStmt.execute();
+				Rol claseRol=(Rol)rol;
+				PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
+				preparedStatement.setInt(1, claseRol.getSysPk());
+				preparedStatement.execute();
 				return true;
 			} catch (SQLException e) {
 				System.out.println("Error: En método eliminar");
