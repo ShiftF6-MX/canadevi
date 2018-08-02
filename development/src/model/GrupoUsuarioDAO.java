@@ -29,18 +29,18 @@ public class GrupoUsuarioDAO implements ObjectDAO {
 	//Metodo para hacer un select a la tabla grupousuario
 	@Override
 	public ArrayList<Object> leer(Connection connection, String campoBusqueda, String valorBusqueda) {
-		ArrayList<Object> listaRol = new ArrayList<Object>();
+		ArrayList<Object> listaGrupoUsuario = new ArrayList<Object>();
 		if(campoBusqueda.isEmpty() || valorBusqueda.isEmpty()) {
 			query="SELECT * FROM gruposusuario ORDER BY sysPK";
 			try {
 				ResultSet resultSet = connection.createStatement().executeQuery(query);							
 				System.out.println(query);
 				while (resultSet.next()) {
-					Rol rol = new Rol();
-					rol.setSysPk(Integer.parseInt(resultSet.getString(1)));
-					rol.setCodigoItem(resultSet.getString(2));
-					rol.setDescripcion(resultSet.getString(3));
-					listaRol.add(rol);
+					GrupoUsuario grupoUsuario = new GrupoUsuario();
+					grupoUsuario.setSysPk(Integer.parseInt(resultSet.getString(1)));
+					grupoUsuario.setNombre(resultSet.getString(2));
+					grupoUsuario.setDescripcion(resultSet.getString(3));
+					listaGrupoUsuario.add(grupoUsuario);
 					System.out.println(resultSet.next());
 				}
 			}catch (SQLException e) {
@@ -57,11 +57,11 @@ public class GrupoUsuarioDAO implements ObjectDAO {
 				preparedStatement.setString(2, valorBusqueda);
 				ResultSet rs=preparedStatement.executeQuery();
 				while (rs.next()) {
-					Rol nuevorol = new Rol();
-					nuevorol.setSysPk(Integer.parseInt(rs.getString(1)));
-					nuevorol.setCodigoItem(rs.getString(2));
-					nuevorol.setDescripcion(rs.getString(3));
-					listaRol.add(nuevorol);
+					GrupoUsuario grupoUsuario = new GrupoUsuario();
+					grupoUsuario.setSysPk(Integer.parseInt(rs.getString(1)));
+					grupoUsuario.setNombre(rs.getString(2));
+					grupoUsuario.setDescripcion(rs.getString(3));
+					listaGrupoUsuario.add(grupoUsuario);
 					System.out.println(rs.next());
 				}
 			}catch (SQLException e) {
@@ -70,7 +70,7 @@ public class GrupoUsuarioDAO implements ObjectDAO {
 				}
 			
 		}
-		return listaRol;
+		return listaGrupoUsuario;
 	
 		}
 	//Metodo para hacer un update en la tabla grupousuario
