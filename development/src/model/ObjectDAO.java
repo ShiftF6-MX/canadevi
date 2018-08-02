@@ -1,7 +1,7 @@
 package model;
 import java.util.ArrayList;
 
-import com.mysql.jdbc.Connection;
+import java.sql.Connection;
 
 public interface ObjectDAO {
 	public boolean crear(Connection connection, Object objeto) throws Exception;
