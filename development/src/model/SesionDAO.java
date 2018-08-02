@@ -20,13 +20,13 @@ public class SesionDAO implements ObjectDAO {
 			String query=" INSERT INTO sesiones (fechaA, horaA, fechaC, horaC, usuario)"
 			        + " values ( ?, ?, ?, ?, ?)";
 			try {			
-				PreparedStatement preparedStmt = (PreparedStatement) connection.prepareStatement(query);
-				preparedStmt.setDate(1, nuevasesion.getFechaApertura());
-				preparedStmt.setTime(2, nuevasesion.getHoraApertura());
-				preparedStmt.setDate(3, nuevasesion.getFechaCierre());
-				preparedStmt.setTime(4, nuevasesion.getHoraCierre());
-				preparedStmt.setInt(5, nuevasesion.getUsuario().getSysPk());
-				preparedStmt.execute();
+				PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
+				preparedStatement.setDate(1, nuevasesion.getFechaApertura());
+				preparedStatement.setTime(2, nuevasesion.getHoraApertura());
+				preparedStatement.setDate(3, nuevasesion.getFechaCierre());
+				preparedStatement.setTime(4, nuevasesion.getHoraCierre());
+				preparedStatement.setInt(5, nuevasesion.getUsuario().getSysPk());
+				preparedStatement.execute();
 				return true;                              
 			} catch (SQLException e) {
 				System.out.println("Error: En método crear");
@@ -48,26 +48,26 @@ public class SesionDAO implements ObjectDAO {
 			ArrayList<Object> listaSesion = new ArrayList<Object>();
 			
 			try {
-				PreparedStatement preparedStmt = (PreparedStatement) connection.prepareStatement(query);
-				preparedStmt.setString(1, campoBusqueda);
-				preparedStmt.setString(2, valorBusqueda);
-				ResultSet rs=preparedStmt.executeQuery();
+				PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
+				preparedStatement.setString(1, campoBusqueda);
+				preparedStatement.setString(2, valorBusqueda);
+				ResultSet rs=preparedStatement.executeQuery();
 				while (rs.next()) {
-					Sesion nuevasesion=new Sesion();
+					Sesion sesion=new Sesion();
 					DateFormat formatoDate = new SimpleDateFormat("DD/MM/AAAA");
 					DateFormat formatoTime = new SimpleDateFormat("HH:MM:SS");
-					nuevasesion.setSysPk(Integer.parseInt(rs.getString(1)));
+					sesion.setSysPk(Integer.parseInt(rs.getString(1)));
 					Date sFechaA = (Date) formatoDate.parse(rs.getString(2));
-					nuevasesion.setFechaApertura(sFechaA);
+					sesion.setFechaApertura(sFechaA);
 					Time sHoraApertura = (Time) formatoTime.parse(rs.getString(3));
-					nuevasesion.setHoraApertura(sHoraApertura);
+					sesion.setHoraApertura(sHoraApertura);
 					Date sFechaC = (Date) formatoDate.parse(rs.getString(4));
-					nuevasesion.setFechaCierre(sFechaC);
+					sesion.setFechaCierre(sFechaC);
 					Time sHoraCierre = (Time) formatoTime.parse(rs.getString(5));
-					nuevasesion.setHoraCierre(sHoraCierre);
+					sesion.setHoraCierre(sHoraCierre);
 					Usuario nuevousuario = new Usuario();
 					nuevousuario.setSysPk(rs.getInt(6));
-					listaSesion.add(nuevasesion);
+					listaSesion.add(sesion);
 				}
 			}catch (SQLException | ParseException e) {
 					System.out.println("Error: En método leer");
@@ -84,15 +84,15 @@ public class SesionDAO implements ObjectDAO {
 					"    SET sysPK= ?, fechaA= ?, horaA= ?, fechaC= ?, horaC= ?, usuario= ?\r\n" + 
 					"    WHERE sysPK= ?;";
 			try {
-				Sesion nuevasesion=new Sesion();
+				Sesion sesion=new Sesion();
 				PreparedStatement preparedStmt = (PreparedStatement) connection.prepareStatement(query);
-				preparedStmt.setInt(1, nuevasesion.getSysPk());
-				preparedStmt.setDate(2, nuevasesion.getFechaApertura());
-				preparedStmt.setTime(3, nuevasesion.getHoraApertura());
-				preparedStmt.setDate(4, nuevasesion.getFechaApertura());
-				preparedStmt.setTime(5, nuevasesion.getHoraCierre());
-				preparedStmt.setInt(6, nuevasesion.getUsuario().getSysPk());	
-				preparedStmt.setInt(7, nuevasesion.getSysPk());
+				preparedStmt.setInt(1, sesion.getSysPk());
+				preparedStmt.setDate(2, sesion.getFechaApertura());
+				preparedStmt.setTime(3, sesion.getHoraApertura());
+				preparedStmt.setDate(4, sesion.getFechaApertura());
+				preparedStmt.setTime(5, sesion.getHoraCierre());
+				preparedStmt.setInt(6, sesion.getUsuario().getSysPk());	
+				preparedStmt.setInt(7, sesion.getSysPk());
 				preparedStmt.execute();
 				return true;
 			} catch (SQLException e) {
@@ -107,10 +107,10 @@ public class SesionDAO implements ObjectDAO {
 		public boolean eliminar(Connection connection, Object sesiones) {
 			String query=" DELETE FROM sesiones WHERE sysPK= ?";
 			try {			
-				Sesion nuevasesion=new Sesion();
-				PreparedStatement preparedStmt = (PreparedStatement) connection.prepareStatement(query);
-				preparedStmt.setInt(1, nuevasesion.getSysPk());
-				preparedStmt.execute();
+				Sesion sesion=new Sesion();
+				PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
+				preparedStatement.setInt(1, sesion.getSysPk());
+				preparedStatement.execute();
 				return true;
 			} catch (SQLException e) {
 				System.out.println("Error: En método eliminar");
