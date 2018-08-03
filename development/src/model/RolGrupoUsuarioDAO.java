@@ -41,7 +41,11 @@ public class RolGrupoUsuarioDAO implements ObjectDAO{
 				while (resultSet.next()) {	
 					rolGrupoUsuario = new RolGrupoUsuario();	
 					rolGrupoUsuario.setSysPk(resultSet.getInt(1));
+					GrupoUsuarioDAO grupoUsuarioDAO = new  GrupoUsuarioDAO();
+					ArrayList <Object> resultadoGrupoUsuario = grupoUsuarioDAO.leer(connection, "sysPK", resultSet.getString(2));					
 					rolGrupoUsuario.setGrupoUsuario(grupoUsuario);
+					RolDAO rolDAO = new RolDAO();
+					ArrayList <Object> resultadoRol = rolDAO.leer(connection, "sysPK", resultSet.getString(2));
 					rolGrupoUsuario.setRol(rol);
 					listaRolGrupoUsuario.add(rolGrupoUsuario);
 					}
@@ -50,7 +54,7 @@ public class RolGrupoUsuarioDAO implements ObjectDAO{
 						e.printStackTrace();
 					}
 			}else {
-				query="SELECT * FROM gruposusuario WHERE "+campoBusqueda+" = ?  ORDER BY sysPK";
+				query="SELECT * FROM rolgruposusuario WHERE "+campoBusqueda+" = ?  ORDER BY sysPK";
 							
 				try {
 					PreparedStatement preparedStatement = connection.prepareStatement(query);
@@ -80,7 +84,7 @@ public class RolGrupoUsuarioDAO implements ObjectDAO{
 	//Metodo para hacer un update en la tabla rolgrupousuario
 	@Override
 	public boolean modificar(Connection connection, Object rolgrupoUsuario){
-		String query="UPDATE grupousuario SET grupoUsuario= ?, rol= ? WHERE sysPK= ?;";
+		String query="UPDATE rolgrupousuario SET grupoUsuario= ?, rol= ? WHERE sysPK= ?;";
 		try {
 			RolGrupoUsuario rolGrupoUsuario=(RolGrupoUsuario)rolgrupoUsuario;
 			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);			
@@ -99,7 +103,7 @@ public class RolGrupoUsuarioDAO implements ObjectDAO{
 	//Metodo para hacer un delete en la tabla rol
 		@Override
 		public boolean eliminar(Connection connection, Object rolgrupousuario) {
-			String query=" DELETE FROM rol WHERE sysPK= ?";
+			String query=" DELETE FROM rolgruposusuario WHERE sysPK= ?";
 			try {			
 				RolGrupoUsuario rolGrupoUsuario=(RolGrupoUsuario)rolgrupousuario;
 				PreparedStatement preparedStmt = (PreparedStatement) connection.prepareStatement(query);
