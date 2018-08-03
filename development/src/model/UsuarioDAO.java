@@ -3,6 +3,7 @@ package model;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -38,41 +39,57 @@ public class UsuarioDAO implements ObjectDAO {
 	//Metodo para hacer un select a la tabla usuarios
 	@Override
 	public ArrayList<Object> leer(Connection connection, String campoBusqueda, String valorBusqueda) {
-		
-		if(campoBusqueda.isEmpty() || valorBusqueda.isEmpty()) {
-			query="SELECT * FROM usuarios ORDER BY sysPK";
-		}else {
-			query="SELECT * FROM usuarios WHERE ? = ?  ORDER BY sysPK";
-		}
-		
-		
+		String query ="";
 		ArrayList<Object> listaUsuario = new ArrayList<Object>();
-		
-		try {
-			PreparedStatement preparedStmt = (PreparedStatement) connection.prepareStatement(query);
-			preparedStmt.setString(1, campoBusqueda);
-			preparedStmt.setString(2, valorBusqueda);
-			ResultSet rs=preparedStmt.executeQuery();
+		if(campoBusqueda.isEmpty() || valorBusqueda.isEmpty()) {
+			query="SELECT * FROM roles ORDER BY sysPK;";
+			try {
+				Statement statement = connection.createStatement();
+				ResultSet resultSet = statement.executeQuery(query);
+				while (resultSet.next()) {
+					Usuario usuario = new Usuario();
+					DateFormat format = new SimpleDateFormat("DD/MM/AAAA");				
+					usuario.setSysPk(Integer.parseInt(resultSet.getString(1)));
+					usuario.setContrasena(resultSet.getString(2));
+					usuario.setCorreoElectronico(resultSet.getString(3));
+					Date sFechaRegistro = (Date) format.parse(resultSet.getString(4));
+					usuario.setFechaRegistro(sFechaRegistro);
+					Date sFechaBloqueo = (Date) format.parse(resultSet.getString(5));
+					usuario.setFechaBloqueo(sFechaBloqueo);
+					usuario.setStatus(Integer.parseInt(resultSet.getString(6)));
+					listaUsuario.add(usuario);
+				}
+			}catch (SQLException | ParseException e) {
+					System.out.println("Error: En método leer");
+					e.printStackTrace();
+				}
+		}else {
+			query="SELECT * FROM roles WHERE "+campoBusqueda+" = ? ORDER BY sysPK;";
 			
-			while (rs.next()) {
-				Usuario nuevousuario = new Usuario();
-				DateFormat format = new SimpleDateFormat("DD/MM/AAAA");				
-				nuevousuario.setSysPk(Integer.parseInt(rs.getString(1)));
-				nuevousuario.setContrasena(rs.getString(2));
-				nuevousuario.setCorreoElectronico(rs.getString(3));
-				Date sFechaRegistro = (Date) format.parse(rs.getString(4));
-				nuevousuario.setFechaRegistro(sFechaRegistro);
-				Date sFechaBloqueo = (Date) format.parse(rs.getString(5));
-				nuevousuario.setFechaBloqueo(sFechaBloqueo);
-				nuevousuario.setStatus(Integer.parseInt(rs.getString(6)));
-				listaUsuario.add(nuevousuario);
-			}
-		}catch (SQLException | ParseException e) {
-				System.out.println("Error: En método leer");
-				e.printStackTrace();
-			}
+			try {
+				PreparedStatement preparedStatement = connection.prepareStatement(query);
+				preparedStatement.setString(1, valorBusqueda);
+				ResultSet resultSet=preparedStatement.executeQuery();
+				while (resultSet.next()) {
+					Usuario nuevousuario = new Usuario();
+					DateFormat format = new SimpleDateFormat("DD/MM/AAAA");				
+					nuevousuario.setSysPk(Integer.parseInt(resultSet.getString(1)));
+					nuevousuario.setContrasena(resultSet.getString(2));
+					nuevousuario.setCorreoElectronico(resultSet.getString(3));
+					Date sFechaRegistro = (Date) format.parse(resultSet.getString(4));
+					nuevousuario.setFechaRegistro(sFechaRegistro);
+					Date sFechaBloqueo = (Date) format.parse(resultSet.getString(5));
+					nuevousuario.setFechaBloqueo(sFechaBloqueo);
+					nuevousuario.setStatus(Integer.parseInt(resultSet.getString(6)));
+					listaUsuario.add(nuevousuario);
+				}
+			}catch (SQLException | ParseException e) {
+					System.out.println("Error: En método leer");
+					e.printStackTrace();
+				}
+			
+		}
 		return listaUsuario;
-
 	}
 	//Metodo para hacer un update en la tabla usuarios
 	@Override

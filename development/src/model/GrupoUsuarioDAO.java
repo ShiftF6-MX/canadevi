@@ -2,18 +2,17 @@ package model;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
 public class GrupoUsuarioDAO implements ObjectDAO {
-	public String query ="";
 	//Metodo crear para crear un Grupo Usuario
 	@Override
 	public boolean crear(Connection connection, Object grupousuario) {
 		GrupoUsuario grupoUsuario=(GrupoUsuario)grupousuario;
-		String query=" INSERT INTO gruposusuario (nombre, descripcion)"
-		+ " values ( ?, ?)";
+		String query=" INSERT INTO gruposusuario (nombre, descripcion) values ( ?, ?)";
 		try {			
 			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
 			preparedStatement.setString(1, grupoUsuario.getNombre());
@@ -29,40 +28,39 @@ public class GrupoUsuarioDAO implements ObjectDAO {
 	//Metodo para hacer un select a la tabla grupousuario
 	@Override
 	public ArrayList<Object> leer(Connection connection, String campoBusqueda, String valorBusqueda) {
+		String query ="";
 		ArrayList<Object> listaGrupoUsuario = new ArrayList<Object>();
 		if(campoBusqueda.isEmpty() || valorBusqueda.isEmpty()) {
 			query="SELECT * FROM gruposusuario ORDER BY sysPK";
 			try {
-				ResultSet resultSet = connection.createStatement().executeQuery(query);							
-				System.out.println(query);
+				Statement statement = connection.createStatement();
+				ResultSet resultSet = statement.executeQuery(query);
+				GrupoUsuario grupoUsuario = null;
 				while (resultSet.next()) {
-					GrupoUsuario grupoUsuario = new GrupoUsuario();
+					grupoUsuario = new GrupoUsuario();
 					grupoUsuario.setSysPk(Integer.parseInt(resultSet.getString(1)));
 					grupoUsuario.setNombre(resultSet.getString(2));
 					grupoUsuario.setDescripcion(resultSet.getString(3));
 					listaGrupoUsuario.add(grupoUsuario);
-					System.out.println(resultSet.next());
 				}
 			}catch (SQLException e) {
 					System.out.println("Error: En método leer");
 					e.printStackTrace();
 				}
 		}else {
-			query="SELECT * FROM gruposusuario WHERE ? = ?  ORDER BY sysPK";
+			query="SELECT * FROM gruposusuario WHERE "+campoBusqueda+" = ?  ORDER BY sysPK";
 						
 			try {
-				System.out.println(query);
 				PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
-				preparedStatement.setString(1, campoBusqueda);
-				preparedStatement.setString(2, valorBusqueda);
-				ResultSet rs=preparedStatement.executeQuery();
-				while (rs.next()) {
-					GrupoUsuario grupoUsuario = new GrupoUsuario();
-					grupoUsuario.setSysPk(Integer.parseInt(rs.getString(1)));
-					grupoUsuario.setNombre(rs.getString(2));
-					grupoUsuario.setDescripcion(rs.getString(3));
+				preparedStatement.setString(1, valorBusqueda);
+				ResultSet resultSet=preparedStatement.executeQuery();
+				GrupoUsuario grupoUsuario = null;
+				while (resultSet.next()) {
+					grupoUsuario = new GrupoUsuario();
+					grupoUsuario.setSysPk(resultSet.getInt(1));
+					grupoUsuario.setNombre(resultSet.getString(2));
+					grupoUsuario.setDescripcion(resultSet.getString(3));
 					listaGrupoUsuario.add(grupoUsuario);
-					System.out.println(rs.next());
 				}
 			}catch (SQLException e) {
 					System.out.println("Error: En método leer");
@@ -91,6 +89,7 @@ public class GrupoUsuarioDAO implements ObjectDAO {
 				return false;
 				}
 		}
+	
 	//Metodo para hacer un delete en la tabla grupousuario
 	@Override
 	public boolean eliminar(Connection connection, Object grupousuario) {

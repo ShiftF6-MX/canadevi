@@ -1,5 +1,6 @@
 package test;
 
+import java.util.ArrayList;
 import model.Rol;
 import model.RolDAO;
 import utilities.ConnectionDB;
@@ -10,12 +11,15 @@ public class TestRol{
 	static ConnectionDB connectionDB =  new ConnectionDB("canadevi", "192.168.0.216", "conn01" , "Simons83Mx");
 	
     public static void testCrear() throws Exception {    	
-    	rol.setCodigoItem("3");
+    	rol.setCodigoItem("5");
     	rol.setDescripcion("Prueba de insert en la tabla rol");  
     	rolDAO.crear(connectionDB.conectarMySQL(), rol);
     }
     public static void testLeer() throws Exception {    	 
-    	rolDAO.leer(connectionDB.conectarMySQL(), "", "");
+    	ArrayList <Object> resultadoSelect = rolDAO.leer(connectionDB.conectarMySQL(), "sysPK", "10");      
+    	for(Object rol: resultadoSelect) {
+    		System.out.println(((Rol) rol).showInformacionRol());
+    	}
     	    	
     }
     public static void testModificar() throws Exception {  

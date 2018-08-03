@@ -3,6 +3,7 @@ package model;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -17,8 +18,7 @@ public class SesionDAO implements ObjectDAO {
 		@Override
 		public boolean crear(Connection connection, Object sesion) {		
 			Sesion nuevasesion=(Sesion)sesion;
-			String query=" INSERT INTO sesiones (fechaA, horaA, fechaC, horaC, usuario)"
-			        + " values ( ?, ?, ?, ?, ?)";
+			String query=" INSERT INTO sesiones (fechaA, horaA, fechaC, horaC, usuario values ( ?, ?, ?, ?, ?)";
 			try {			
 				PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
 				preparedStatement.setDate(1, nuevasesion.getFechaApertura());
@@ -38,43 +38,67 @@ public class SesionDAO implements ObjectDAO {
 		//Metodo para hacer un select a la tabla sesiones
 		@Override
 		public ArrayList<Object> leer(Connection connection, String campoBusqueda, String valorBusqueda) {
-
-			if(campoBusqueda.isEmpty() || valorBusqueda.isEmpty()) {
-				query="SELECT * FROM sesiones ORDER BY sysPK";
-			}else {
-				query="SELECT * FROM sesiones WHERE ? = ?  ORDER BY sysPK";
-			}
-			
+			String query ="";
 			ArrayList<Object> listaSesion = new ArrayList<Object>();
-			
-			try {
-				PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
-				preparedStatement.setString(1, campoBusqueda);
-				preparedStatement.setString(2, valorBusqueda);
-				ResultSet rs=preparedStatement.executeQuery();
-				while (rs.next()) {
-					Sesion sesion=new Sesion();
-					DateFormat formatoDate = new SimpleDateFormat("DD/MM/AAAA");
-					DateFormat formatoTime = new SimpleDateFormat("HH:MM:SS");
-					sesion.setSysPk(Integer.parseInt(rs.getString(1)));
-					Date sFechaA = (Date) formatoDate.parse(rs.getString(2));
-					sesion.setFechaApertura(sFechaA);
-					Time sHoraApertura = (Time) formatoTime.parse(rs.getString(3));
-					sesion.setHoraApertura(sHoraApertura);
-					Date sFechaC = (Date) formatoDate.parse(rs.getString(4));
-					sesion.setFechaCierre(sFechaC);
-					Time sHoraCierre = (Time) formatoTime.parse(rs.getString(5));
-					sesion.setHoraCierre(sHoraCierre);
-					Usuario nuevousuario = new Usuario();
-					nuevousuario.setSysPk(rs.getInt(6));
-					listaSesion.add(sesion);
-				}
-			}catch (SQLException | ParseException e) {
-					System.out.println("Error: En método leer");
-					e.printStackTrace();
-				}
+			if(campoBusqueda.isEmpty() || valorBusqueda.isEmpty()) {
+				query="SELECT * FROM roles ORDER BY sysPK;";
+				try {
+					Statement statement = connection.createStatement();
+					ResultSet resultSet = statement.executeQuery(query);
+					Sesion sesion = null;
+					while (resultSet.next()) {
+						sesion=new Sesion();
+						DateFormat formatoDate = new SimpleDateFormat("DD/MM/AAAA");
+						DateFormat formatoTime = new SimpleDateFormat("HH:MM:SS");
+						sesion.setSysPk(Integer.parseInt(resultSet.getString(1)));
+						Date sFechaA = (Date) formatoDate.parse(resultSet.getString(2));
+						sesion.setFechaApertura(sFechaA);
+						Time sHoraApertura = (Time) formatoTime.parse(resultSet.getString(3));
+						sesion.setHoraApertura(sHoraApertura);
+						Date sFechaC = (Date) formatoDate.parse(resultSet.getString(4));
+						sesion.setFechaCierre(sFechaC);
+						Time sHoraCierre = (Time) formatoTime.parse(resultSet.getString(5));
+						sesion.setHoraCierre(sHoraCierre);
+						Usuario nuevousuario = new Usuario();
+						nuevousuario.setSysPk(resultSet.getInt(6));
+						listaSesion.add(sesion);
+					}
+				}catch (SQLException | ParseException e) {
+						System.out.println("Error: En método leer");
+						e.printStackTrace();
+					}
+			}else {
+				query="SELECT * FROM roles WHERE "+campoBusqueda+" = ? ORDER BY sysPK;";
+				
+				try {
+					PreparedStatement preparedStatement = connection.prepareStatement(query);
+					preparedStatement.setString(1, valorBusqueda);
+					ResultSet resultSet=preparedStatement.executeQuery();
+					Sesion sesion = null;
+					while (resultSet.next()) {
+						sesion=new Sesion();
+						DateFormat formatoDate = new SimpleDateFormat("DD/MM/AAAA");
+						DateFormat formatoTime = new SimpleDateFormat("HH:MM:SS");
+						sesion.setSysPk(Integer.parseInt(resultSet.getString(1)));
+						Date sFechaA = (Date) formatoDate.parse(resultSet.getString(2));
+						sesion.setFechaApertura(sFechaA);
+						Time sHoraApertura = (Time) formatoTime.parse(resultSet.getString(3));
+						sesion.setHoraApertura(sHoraApertura);
+						Date sFechaC = (Date) formatoDate.parse(resultSet.getString(4));
+						sesion.setFechaCierre(sFechaC);
+						Time sHoraCierre = (Time) formatoTime.parse(resultSet.getString(5));
+						sesion.setHoraCierre(sHoraCierre);
+						Usuario nuevousuario = new Usuario();
+						nuevousuario.setSysPk(resultSet.getInt(6));
+						listaSesion.add(sesion);
+					}
+				}catch (SQLException | ParseException e) {
+						System.out.println("Error: En método leer");
+						e.printStackTrace();
+					}
+				
+			}
 			return listaSesion;
-
 		}
 
 		//Metodo para hacer un update en la tabla usuarios
