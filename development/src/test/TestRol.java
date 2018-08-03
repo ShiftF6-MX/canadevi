@@ -15,17 +15,17 @@ public class TestRol{
     	rolDAO.crear(connectionDB.conectarMySQL(), rol);
     }
     public static void testLeer() throws Exception {    	 
-    	rolDAO.leer(connectionDB.conectarMySQL(), "sysPk", Integer.toString(6));
+    	rolDAO.leer(connectionDB.conectarMySQL(), "", "");
     	    	
     }
     public static void testModificar() throws Exception {  
-    	rol.setSysPk(6);
+    	rol.setSysPk(8);
     	rol.setCodigoItem("1");
     	rol.setDescripcion("Cambio de descripcion");
     	rolDAO.modificar(connectionDB.conectarMySQL(), rol);
     }
     public static void testEliminar() throws Exception {    	 
-    	rol.setSysPk(5);
+    	rol.setSysPk(8);
     	rolDAO.eliminar(connectionDB.conectarMySQL(), rol);
     	
     }

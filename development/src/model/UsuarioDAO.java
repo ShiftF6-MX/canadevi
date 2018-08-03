@@ -15,18 +15,18 @@ public class UsuarioDAO implements ObjectDAO {
 	//Metodo crear para crear un usuario nuevo
 	@Override
 	public boolean crear(Connection connection, Object usuario){		
-		Usuario nuevousuario=(Usuario)usuario;
+		Usuario claseUsuario=(Usuario)usuario;
 		String query=" INSERT INTO usuarios (usuario, contrasena, correoElectronico, fechaRegistro, fechaBloqueo, status)"
 		        + " values ( ?, ?, ?, ?, ?, ?, ?)";
 		try {			
 			PreparedStatement preparedStmt = (PreparedStatement) connection.prepareStatement(query);
-			preparedStmt.setString(1, nuevousuario.getUsuario());
-			preparedStmt.setString(2, nuevousuario.getContrasena());
-			preparedStmt.setString(3, nuevousuario.getCorreoElectronico());
-			preparedStmt.setDate(4, nuevousuario.getFechaRegistro());
-			preparedStmt.setDate(5, nuevousuario.getFechaBloqueo());
-			preparedStmt.setInt(6, nuevousuario.getStatus());
-			preparedStmt.setInt(1, nuevousuario.getGrupoUsuario().getSysPk());
+			preparedStmt.setString(1, claseUsuario.getUsuario());
+			preparedStmt.setString(2, claseUsuario.getContrasena());
+			preparedStmt.setString(3, claseUsuario.getCorreoElectronico());
+			preparedStmt.setDate(4, claseUsuario.getFechaRegistro());
+			preparedStmt.setDate(5, claseUsuario.getFechaBloqueo());
+			preparedStmt.setInt(6, claseUsuario.getStatus());
+			preparedStmt.setInt(1, claseUsuario.getGrupoUsuario().getSysPk());
 			preparedStmt.execute();
 			return true;
 		} catch (SQLException e) {
@@ -40,7 +40,7 @@ public class UsuarioDAO implements ObjectDAO {
 	public ArrayList<Object> leer(Connection connection, String campoBusqueda, String valorBusqueda) {
 		
 		if(campoBusqueda.isEmpty() || valorBusqueda.isEmpty()) {
-			query="SELECT * FROM usuarios WHERE ORDER BY sysPK";
+			query="SELECT * FROM usuarios ORDER BY sysPK";
 		}else {
 			query="SELECT * FROM usuarios WHERE ? = ?  ORDER BY sysPK";
 		}
@@ -81,18 +81,18 @@ public class UsuarioDAO implements ObjectDAO {
 				"    SET usuario= ?, contrasena= ?, correoElectronico= ?, fechaRegistro= ?, fechaBloqueo= ?, status= ?, grupoUsuario= ? \r\n" + 
 				"    WHERE sysPK= ?;";
 		try {
-			Usuario nuevousuario=(Usuario)usuario;			
-			PreparedStatement preparedStmt = (PreparedStatement) connection.prepareStatement(query);
-			preparedStmt.setString(1, nuevousuario.getUsuario());
-			preparedStmt.setString(2, nuevousuario.getContrasena());
-			preparedStmt.setString(3, nuevousuario.getCorreoElectronico());
-			preparedStmt.setDate(4, nuevousuario.getFechaRegistro());
-			preparedStmt.setDate(5, nuevousuario.getFechaBloqueo());
-			preparedStmt.setInt(6, nuevousuario.getStatus());
-			preparedStmt.setInt(7, nuevousuario.getGrupoUsuario().getSysPk());
-			preparedStmt.setInt(8, nuevousuario.getSysPk());
-			preparedStmt.setInt(8, nuevousuario.getGrupoUsuario().getSysPk());
-			preparedStmt.execute();
+			Usuario claseUsuario=(Usuario)usuario;			
+			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
+			preparedStatement.setString(1, claseUsuario.getUsuario());
+			preparedStatement.setString(2, claseUsuario.getContrasena());
+			preparedStatement.setString(3, claseUsuario.getCorreoElectronico());
+			preparedStatement.setDate(4, claseUsuario.getFechaRegistro());
+			preparedStatement.setDate(5, claseUsuario.getFechaBloqueo());
+			preparedStatement.setInt(6, claseUsuario.getStatus());
+			preparedStatement.setInt(7, claseUsuario.getGrupoUsuario().getSysPk());
+			preparedStatement.setInt(8, claseUsuario.getSysPk());
+			preparedStatement.setInt(8, claseUsuario.getGrupoUsuario().getSysPk());
+			preparedStatement.execute();
 			return true;
 		} catch (SQLException e) {
 			System.out.println("Error: En método modificar");
@@ -105,10 +105,10 @@ public class UsuarioDAO implements ObjectDAO {
 	public boolean eliminar(Connection connection, Object usuario) {
 		String query=" DELETE FROM usuarios WHERE sysPK= ?";
 		try {			
-			Usuario nuevousuario=(Usuario)usuario;
-			PreparedStatement preparedStmt = (PreparedStatement) connection.prepareStatement(query);
-			preparedStmt.setInt(1, nuevousuario.getSysPk());
-			preparedStmt.execute();
+			Usuario claseUsuario=(Usuario)usuario;
+			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);
+			preparedStatement.setInt(1, claseUsuario.getSysPk());
+			preparedStatement.execute();
 			return true;
 		} catch (SQLException e) {
 			System.out.println("Error: En método eliminar");

@@ -34,15 +34,15 @@ public class RolDAO implements ObjectDAO{
 			if(campoBusqueda.isEmpty() || valorBusqueda.isEmpty()) {
 				query="SELECT * FROM roles ORDER BY sysPK";
 				try {
-					ResultSet rs = connection.createStatement().executeQuery(query);							
+					ResultSet resultSet = connection.createStatement().executeQuery(query);							
 					System.out.println(query);
-					while (rs.next()) {
-						Rol claseRol = new Rol();
-						claseRol.setSysPk(Integer.parseInt(rs.getString(1)));
-						claseRol.setCodigoItem(rs.getString(2));
-						claseRol.setDescripcion(rs.getString(3));
+					Rol claseRol = new Rol();
+					while (resultSet.next()) {						
+						claseRol.setSysPk(Integer.parseInt(resultSet.getString(1)));
+						claseRol.setCodigoItem(resultSet.getString(2));
+						claseRol.setDescripcion(resultSet.getString(3));
 						listaRol.add(claseRol);
-						System.out.println(rs.next());
+						System.out.println(resultSet.next());
 					}
 				}catch (SQLException e) {
 						System.out.println("Error: En método leer");
@@ -57,8 +57,8 @@ public class RolDAO implements ObjectDAO{
 					preparedStatement.setString(1, campoBusqueda);
 					preparedStatement.setString(2, valorBusqueda);
 					ResultSet rs=preparedStatement.executeQuery();
+					Rol claseRol = new Rol();
 					while (rs.next()) {
-						Rol claseRol = new Rol();
 						claseRol.setSysPk(Integer.parseInt(rs.getString(1)));
 						claseRol.setCodigoItem(rs.getString(2));
 						claseRol.setDescripcion(rs.getString(3));
