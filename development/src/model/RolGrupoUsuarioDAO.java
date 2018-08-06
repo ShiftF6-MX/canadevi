@@ -42,10 +42,12 @@ public class RolGrupoUsuarioDAO implements ObjectDAO{
 					rolGrupoUsuario = new RolGrupoUsuario();	
 					rolGrupoUsuario.setSysPk(resultSet.getInt(1));
 					GrupoUsuarioDAO grupoUsuarioDAO = new  GrupoUsuarioDAO();
-					ArrayList <Object> resultadoGrupoUsuario = grupoUsuarioDAO.leer(connection, "sysPK", resultSet.getString(2));					
+					ArrayList <Object> resultadoGrupoUsuario = grupoUsuarioDAO.leer(connection, "sysPK", resultSet.getString(2));
+					grupoUsuario= (GrupoUsuario) resultadoGrupoUsuario.get(0);
 					rolGrupoUsuario.setGrupoUsuario(grupoUsuario);
 					RolDAO rolDAO = new RolDAO();
-					ArrayList <Object> resultadoRol = rolDAO.leer(connection, "sysPK", resultSet.getString(2));
+					ArrayList <Object> resultadoRol = rolDAO.leer(connection, "sysPK", resultSet.getString(3));
+					rol = (Rol) resultadoRol.get(0);
 					rolGrupoUsuario.setRol(rol);
 					listaRolGrupoUsuario.add(rolGrupoUsuario);
 					}
@@ -64,9 +66,15 @@ public class RolGrupoUsuarioDAO implements ObjectDAO{
 					Rol rol = new Rol();
 					GrupoUsuario grupoUsuario = new GrupoUsuario();
 					while (resultSet.next()) {		
-						rolGrupoUsuario = new RolGrupoUsuario();
+						rolGrupoUsuario = new RolGrupoUsuario();	
 						rolGrupoUsuario.setSysPk(resultSet.getInt(1));
+						GrupoUsuarioDAO grupoUsuarioDAO = new  GrupoUsuarioDAO();
+						ArrayList <Object> resultadoGrupoUsuario = grupoUsuarioDAO.leer(connection, "sysPK", resultSet.getString(2));
+						grupoUsuario= (GrupoUsuario) resultadoGrupoUsuario.get(0);
 						rolGrupoUsuario.setGrupoUsuario(grupoUsuario);
+						RolDAO rolDAO = new RolDAO();
+						ArrayList <Object> resultadoRol = rolDAO.leer(connection, "sysPK", resultSet.getString(3));
+						rol = (Rol) resultadoRol.get(0);
 						rolGrupoUsuario.setRol(rol);
 						listaRolGrupoUsuario.add(rolGrupoUsuario);
 					}
@@ -83,10 +91,10 @@ public class RolGrupoUsuarioDAO implements ObjectDAO{
 
 	//Metodo para hacer un update en la tabla rolgrupousuario
 	@Override
-	public boolean modificar(Connection connection, Object rolgrupoUsuario){
-		String query="UPDATE rolgrupousuario SET grupoUsuario= ?, rol= ? WHERE sysPK= ?;";
+	public boolean modificar(Connection connection, Object rolgrupousuario){
+		String query="UPDATE rolgruposusuario SET grupoUsuario= ?, rol= ? WHERE sysPK= ?;";
 		try {
-			RolGrupoUsuario rolGrupoUsuario=(RolGrupoUsuario)rolgrupoUsuario;
+			RolGrupoUsuario rolGrupoUsuario=(RolGrupoUsuario)rolgrupousuario;
 			PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query);			
 			preparedStatement.setInt(1, rolGrupoUsuario.getGrupoUsuario().getSysPk());
 			preparedStatement.setInt(2, rolGrupoUsuario.getRol().getSysPk());

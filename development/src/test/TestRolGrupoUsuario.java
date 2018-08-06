@@ -3,7 +3,6 @@ package test;
 import java.util.ArrayList;
 
 import model.GrupoUsuario;
-import model.GrupoUsuarioDAO;
 import model.Rol;
 import model.RolGrupoUsuario;
 import model.RolGrupoUsuarioDAO;
@@ -25,19 +24,21 @@ public class TestRolGrupoUsuario{
     	rolGrupoUsuarioDAO.crear(connectionDB.conectarMySQL(), rolGrupoUsuario);
     }
     public static void testLeer() throws Exception {    	 
-    	ArrayList <Object> resultadoSelect = rolGrupoUsuarioDAO.leer(connectionDB.conectarMySQL(), "sysPK", "4");      
-    	for (int i = 0; i < resultadoSelect.size(); i++) {
-			Object RolGrupoUsuario = resultadoSelect.get(i);
-			System.out.println(((RolGrupoUsuario) rolGrupoUsuario).showInformacionRolGrupoUsuario());
+    	//ArrayList <Object> resultadoSelect = rolGrupoUsuarioDAO.leer(connectionDB.conectarMySQL(), "sysPK", "4");   
+    	ArrayList <Object> resultadoSelect = rolGrupoUsuarioDAO.leer(connectionDB.conectarMySQL(), "", "");
+    	for(Object rolGrupoUsuario: resultadoSelect) {
+    		System.out.println(((RolGrupoUsuario) rolGrupoUsuario).showInformacionRolGrupoUsuario());
 		}
     	    	
     }
     public static void testModificar() throws Exception {  
-    	grupoUsuario = new GrupoUsuario(1,"Admin","Grupo de Grupo administradores");
-    	rol=new Rol (10,"3","Rol de administradores");
+    	//Pendiente
+    	rolGrupoUsuario.setSysPk(4);
+    	grupoUsuario = new GrupoUsuario(1,"Admin","Grupo administradores");
+    	rol=new Rol (10,"3","Prueba de insert en la tabla rol");
 		rolGrupoUsuario.setGrupoUsuario(grupoUsuario);
-    	rolGrupoUsuario.setRol(rol) ;
-    	rolGrupoUsuarioDAO.modificar(connectionDB.conectarMySQL(), rolGrupoUsuarioDAO);
+    	rolGrupoUsuario.setRol(rol);
+    	rolGrupoUsuarioDAO.modificar(connectionDB.conectarMySQL(), rolGrupoUsuario);
     }
     public static void testEliminar() throws Exception {    	 
     	rolGrupoUsuario.setSysPk(3);

@@ -4,17 +4,19 @@ import java.util.ArrayList;
 
 import model.Rol;
 import model.RolDAO;
+import model.Sesion;
+import model.SesionDAO;
+import model.Usuario;
 import utilities.ConnectionDB;
 
 public class TestSesion {
 
-	static Rol rol = new Rol();
-	static RolDAO rolDAO = new RolDAO();
+	static Sesion sesion = new Sesion();	
+	static SesionDAO sesionDAO = new SesionDAO();
 	static ConnectionDB connectionDB =  new ConnectionDB("canadevi", "192.168.0.216", "conn01" , "Simons83Mx");
 	
     public static void testCrear() throws Exception {    	
-    	rol.setCodigoItem("5");
-    	rol.setDescripcion("Prueba de insert en la tabla rol");  
+    	Usuario usaurio = new Usuario();  
     	rolDAO.crear(connectionDB.conectarMySQL(), rol);
     }
     public static void testLeer() throws Exception {    	 
@@ -37,7 +39,7 @@ public class TestSesion {
     }
     public static void main(String[] args) throws Exception{
     	//testCrear();
-    	testLeer();
+    	//testLeer();
     	//testModificar();
     	//testEliminar();
     }
